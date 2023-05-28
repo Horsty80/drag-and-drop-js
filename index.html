@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+         <div id="left">
+            <div class="list" draggable="true">
+                <img src="icon.png">List Item 1
+            </div>
+            <div class="list" draggable="true">
+                <img src="icon.png">List Item 2
+            </div>
+            <div class="list" draggable="true">
+                <img src="icon.png">List Item 3
+            </div>
+            <div class="list" draggable="true">
+                <img src="icon.png">List Item 4
+            </div>
+         </div> 
+         <div id="right"></div>
+    </div>
+
+<script>
+        let lists = document.getElementsByClassName('list');
+        let rightBox = document.getElementById('right');
+        let leftBox = document.getElementById('left');
+
+        for(list of lists) {
+            list.addEventListener('dragstart', function(e) {
+                let selected = e.target;
+                e.dataTransfer.setData('text/plain', null);
+                e.dataTransfer.effectAllowed = 'move';
+                selected.classList.add('dragging');
+            });   
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            this.classList.add('dragging-over');
+        }
+
+        function handleDragLeave() {
+            this.classList.remove('dragging-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            let selected = document.querySelector('.dragging');
+            this.append(selected);
+            selected.classList.remove('dragging');
+            this.classList.remove('dragging-over');
+        }
+
+        rightBox.addEventListener('dragover', handleDragOver);
+        rightBox.addEventListener('dragleave', handleDragLeave);
+        rightBox.addEventListener('drop', handleDrop);
+
+        leftBox.addEventListener('dragover', handleDragOver);
+        leftBox.addEventListener('dragleave', handleDragLeave);
+        leftBox.addEventListener('drop', handleDrop);
+    </script>
+
+</body>
+</html>
+
+
+<!-- 
+
+    function dragStart(e) {
+        let selected = e.target;
+
+        rightBox.addEventListener('dragover', e => {
+        debugger;
+            e.preventDefault();
+            selected.style.opacity = '0.5';
+        });
+        rightBox.addEventListener('drop', e => {
+            selected.style.opacity = '1';
+            rightBox.appendChild(selected);
+            selected = null;
+        });
+
+
+        leftBox.addEventListener('dragover', e => {
+            e.preventDefault();
+            selected.style.opacity = '0.5';
+        });
+        leftBox.addEventListener('drop', e => {
+            selected.style.opacity = '1';
+            leftBox.appendChild(selected);
+            selected = null;
+        });
+    } -->
